@@ -1,10 +1,14 @@
 package pki;
 import java.io.Serializable;
+
 import java.security.*;
 
 public class KeyPairMsg implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+ 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5286723823304109181L;
 	private KeyPair keypair;
 	
 	public KeyPairMsg(KeyPair keypair) {

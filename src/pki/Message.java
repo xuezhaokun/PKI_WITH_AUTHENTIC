@@ -4,7 +4,11 @@ import java.util.Arrays;
 
 public class Message implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1513891154966579378L;
 	private String orginalMsg;
 	private String encodedMsg;
 	private String authenticMsg;

@@ -1,14 +1,8 @@
 package pki;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.*;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
-
 import javax.crypto.*;
 import java.util.Base64;
 import java.io.ObjectInputStream;
@@ -21,6 +15,7 @@ public class Client1 {
 		ObjectInputStream ois1 = new ObjectInputStream(connectionSocket.getInputStream());
 		KeyPairMsg kpFromCA = (KeyPairMsg)ois1.readObject();
 		connectionSocket.close();
+		client1kpSocket.close();
 		return kpFromCA.getKeypair();
 	}
 	
@@ -44,6 +39,7 @@ public class Client1 {
 		ObjectInputStream ois1 = new ObjectInputStream(connectionSocket.getInputStream());
 		Message msgFromApp1 = (Message)ois1.readObject();
 		connectionSocket.close();
+		client1MsgSocket.close();
 		return msgFromApp1;
 	}
 	

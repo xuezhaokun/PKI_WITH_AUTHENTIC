@@ -2,6 +2,7 @@ package pki;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.*;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -13,6 +14,15 @@ import java.io.ObjectOutputStream;
 
 public class App1 {
 
+	private static PublicKeysMsg getPublicKeyObj(int portNumber) throws UnknownHostException, IOException, InvalidKeySpecException, NoSuchAlgorithmException, ClassNotFoundException{
+		ServerSocket client3PubkMsgSocket = new ServerSocket(portNumber);
+		Socket connectionSocket = client3PubkMsgSocket.accept();
+		ObjectInputStream oisca = new ObjectInputStream(connectionSocket.getInputStream());
+		PublicKeysMsg publicKeysFromCA = (PublicKeysMsg)oisca.readObject();
+		connectionSocket.close();
+		client3PubkMsgSocket.close();
+		return publicKeysFromCA;
+	}
 	
 	// read public keys
 	public static PublicKey getPublicKey(int portNumber) throws UnknownHostException, IOException, InvalidKeySpecException, NoSuchAlgorithmException{
@@ -23,6 +33,8 @@ public class App1 {
 			String pubk = inFromCA.readLine(); 
 			byte[] decodedPublicKey = Base64.getDecoder().decode(pubk);
 			PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodedPublicKey));
+			connectionSocket.close();
+			publickKeySocket.close();
 			return publicKey;
 		}
 	}
@@ -65,12 +77,15 @@ public class App1 {
 	
 	public static void main(String[] args) throws Exception {
 		
-		PublicKey client1pubk = App1.getPublicKey(5555);
-		PublicKey router2pubk = App1.getPublicKey(5556);
-		PublicKey client3pubk = App1.getPublicKey(5557);
-	
+		//PublicKey client1pubk = App1.getPublicKey(5555);
+		//PublicKey router2pubk = App1.getPublicKey(5556);
+		//PublicKey client3pubk = App1.getPublicKey(5557);
+		PublicKeysMsg pubkeys = App1.getPublicKeyObj(6668);
+		PublicKey router2Pubk = pubkeys.getRouter2Pubk();
+		PublicKey client1Pubk = pubkeys.getClient1Pubk();
+		PublicKey client3Pubk = pubkeys.getClient3Pubk();
 		int msgToClient1Port = 1234;
-		App1.sendMsgToClient1(client1pubk, router2pubk, client3pubk, msgToClient1Port);
+		App1.sendMsgToClient1(client1Pubk, router2Pubk, client3Pubk, msgToClient1Port);
 	}
 
 }
