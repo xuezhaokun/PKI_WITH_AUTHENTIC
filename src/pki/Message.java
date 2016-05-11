@@ -7,12 +7,14 @@ public class Message implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String orginalMsg;
 	private String encodedMsg;
+	private String authenticMsg;
 	private String[] route;
 	
-	public Message(String orginalMsg, String encodedMsg, String[] route) {
+	public Message(String orginalMsg, String encodedMsg, String authenticMsg,String[] route) {
 		super();
 		this.orginalMsg = orginalMsg;
 		this.encodedMsg = encodedMsg;
+		this.authenticMsg = authenticMsg;
 		this.route = route;
 	}
 
@@ -44,10 +46,18 @@ public class Message implements Serializable{
 		return serialVersionUID;
 	}
 
+	public String getAuthenticMsg() {
+		return authenticMsg;
+	}
+
+	public void setAuthenticMsg(String authenticMsg) {
+		this.authenticMsg = authenticMsg;
+	}
+
 	@Override
 	public String toString() {
-		return "Message [orginalMsg=" + orginalMsg + ", encodedMsg=" + encodedMsg + ", route=" + Arrays.toString(route)
-				+ "]";
+		return "Message [orginalMsg=" + orginalMsg + ", encodedMsg=" + encodedMsg + ", authenticMsg=" + authenticMsg
+				+ ", route=" + Arrays.toString(route) + "]";
 	}
 	
 }
